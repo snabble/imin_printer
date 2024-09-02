@@ -77,7 +77,7 @@ public class IminPrinterPlugin implements FlutterPlugin, MethodCallHandler, Stre
             //初始化 2.0 的 SDK。
             PrinterHelper.getInstance().initPrinterService(_context);
             sdkVersion = "2.0.0";
-        } else {
+        } else if (!com.imin.printerlib.util.Utils.getSystemProperties("sys.neostra_oem_id").isEmpty()) {
             //初始化 1.0 SDK
             iminPrintUtils = IminPrintUtils.getInstance(_context);
             String deviceModel = Utils.getInstance().getModel();
