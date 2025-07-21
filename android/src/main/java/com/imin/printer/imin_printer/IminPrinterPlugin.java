@@ -15,7 +15,6 @@ import androidx.annotation.NonNull;
 
 import com.imin.printer.ILabelPrintResult;
 import com.imin.printer.INeoPrinterCallback;
-import com.imin.printer.IPrinterCallback;
 import com.imin.printer.PrinterHelper;
 import com.imin.printer.enums.Align;
 import com.imin.printer.enums.ErrorLevel;
@@ -37,11 +36,9 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.HashMap;
-import java.util.concurrent.ExecutionException;
 
 import android.graphics.Typeface;
 import android.content.Context;
@@ -462,7 +459,6 @@ Log.e("IminPrinter", "printBitmapToUrl 111 :" +img );                           
                             Log.e("IminPrinter", "printBitmapToUrl:" + err.getMessage());
                             result.success(false);
                         }
-                    }
                 }).start();
                 break;
             case "printSingleBitmapBlackWhite":
