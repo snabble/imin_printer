@@ -1,32 +1,29 @@
-plugins {
-    id 'com.android.application'
-    id 'kotlin-android'
-    id 'dev.flutter.flutter-gradle-plugin'
-    id 'com.google.devtools.ksp'
-    id 'com.github.triplet.play'
-}
+group 'com.imin.printer.imin_printer'
+version '1.0'
 
-def localProperties = new Properties()
-def localPropertiesFile = rootProject.file('local.properties')
-if (localPropertiesFile.exists()) {
-    localPropertiesFile.withReader('UTF-8') { reader ->
-        localProperties.load(reader)
+buildscript {
+    repositories {
+        google()
+        mavenCentral()
+        maven { url 'https://www.jitpack.io' }
+    }
+
+    dependencies {
+        classpath 'com.android.tools.build:gradle:7.3.0'
     }
 }
 
-def flutterVersionCode = localProperties.getProperty('flutter.versionCode')
-if (flutterVersionCode == null) {
-    flutterVersionCode = '1'
+rootProject.allprojects {
+    repositories {
+        google()
+        mavenCentral()
+        maven { url 'https://www.jitpack.io' }
+    }
 }
 
-def flutterVersionName = localProperties.getProperty('flutter.versionName')
-if (flutterVersionName == null) {
-    flutterVersionName = '1.0'
-}
+apply plugin: 'com.android.library'
 
-def signingKeyPassword = localProperties.getProperty('android.signingKeyPassword')
-
-apply from: "./resolve_dependencies.gradle"//解决编译导入Flutter相关的包报错问题
+apply from: "android/resolve_dependencies.gradle"//解决编译导入Flutter相关的包报错问题
 android {
     namespace 'com.imin.printer.imin_printer'
     compileSdk 34
@@ -37,7 +34,7 @@ android {
     }
 
     defaultConfig {
-        minSdkVersion 21
+        minSdkVersion 16
         multiDexEnabled true
     }
     dependencies {
