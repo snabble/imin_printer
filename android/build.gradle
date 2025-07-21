@@ -1,29 +1,9 @@
 plugins {
-    id 'com.android.application'
-    id 'dev.flutter.flutter-gradle-plugin'
+    id 'com.android.library'
 }
 
-def localProperties = new Properties()
-def localPropertiesFile = rootProject.file('local.properties')
-if (localPropertiesFile.exists()) {
-    localPropertiesFile.withReader('UTF-8') { reader ->
-        localProperties.load(reader)
-    }
-}
-
-def flutterVersionCode = localProperties.getProperty('flutter.versionCode')
-if (flutterVersionCode == null) {
-    flutterVersionCode = '1'
-}
-
-def flutterVersionName = localProperties.getProperty('flutter.versionName')
-if (flutterVersionName == null) {
-    flutterVersionName = '1.0'
-}
-
-def signingKeyPassword = localProperties.getProperty('android.signingKeyPassword')
-
-apply from: "./resolve_dependencies.gradle"//解决编译导入Flutter相关的包报错问题
+// enable while development
+//apply from: "./resolve_dependencies.gradle"//解决编译导入Flutter相关的包报错问题
 android {
     namespace 'com.imin.printer.imin_printer'
     compileSdk 34
