@@ -4,8 +4,8 @@ plugins {
 
 // enable while development
 //apply from: "./resolve_dependencies.gradle"//解决编译导入Flutter相关的包报错问题
+
 android {
-    namespace 'com.imin.printer.imin_printer'
     compileSdk 34
 
     compileOptions {
@@ -17,10 +17,7 @@ android {
         minSdkVersion 21
         multiDexEnabled true
     }
-    dependencies {
-        testImplementation 'junit:junit:4.13.2'
-        testImplementation 'org.mockito:mockito-core:5.0.0'
-    }
+
     testOptions {
         unitTests.all {
             testLogging {
@@ -30,13 +27,14 @@ android {
             }
         }
     }
+    namespace 'com.imin.printer.imin_printer'
 }
 dependencies {
     implementation files('libs/iminPrinterSDK-15_V1.3.2_2505261539.jar')
+
     testImplementation 'junit:junit:4.13.2'
-    testImplementation 'org.mockito:mockito-core:5.0.0'
-    implementation 'io.reactivex.rxjava2:rxandroid:2.0.1'
-//    implementation files('libs/IminLibs1.0.15.jar')
+    testImplementation 'org.mockito:mockito-core:5.18.0'
+    implementation 'io.reactivex.rxjava2:rxandroid:2.1.1'
     implementation files('libs/IminStraElectronicSDK_V1.2.jar')
     implementation "androidx.multidex:multidex:2.0.1"
     implementation 'com.github.iminsoftware:IminPrinterLibrary:V1.0.0.15'

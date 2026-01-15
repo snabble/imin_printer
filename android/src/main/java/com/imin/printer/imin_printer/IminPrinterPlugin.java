@@ -12,6 +12,7 @@ import android.graphics.Paint;
 import android.os.Build;
 
 import androidx.annotation.NonNull;
+import androidx.core.content.ContextCompat;
 
 import com.imin.printer.ILabelPrintResult;
 import com.imin.printer.INeoPrinterCallback;
@@ -88,7 +89,7 @@ public class IminPrinterPlugin implements FlutterPlugin, MethodCallHandler, Stre
         channel = new MethodChannel(flutterPluginBinding.getBinaryMessenger(), "imin_printer");
         _context = flutterPluginBinding.getApplicationContext();
         eventChannel = new EventChannel(flutterPluginBinding.getBinaryMessenger(), "imin_printer_event");
-        if (Build.MODEL.contains("I23D") || Build.MODEL.contains("I23M") || Build.MODEL.contains("I24D") || Build.MODEL.contains("I24T") || Build.MODEL.contains("I24M")) {
+        if (isAndroid15()) {
             //初始化 2.0 的 SDK。
             PrinterHelper.getInstance().initPrinterService(_context);
             sdkVersion = "2.0.0";
@@ -825,11 +826,12 @@ Log.e("IminPrinter", "printBitmapToUrl 111 :" +img );                           
                     PrinterHelper.getInstance().getPrinterSerialNumber(new INeoPrinterCallback() {
                         @Override
                         public void onRunResult(boolean isSuccess) throws RemoteException {
-                            result.success(isSuccess);//"true 绑定服务成功" : "false 绑定服务失败"
+//                            result.success(isSuccess);//"true 绑定服务成功" : "false 绑定服务失败"
                         }
 
                         @Override
                         public void onReturnString(String s) throws RemoteException {
+                            Log.d("TAG", "getPrinterSerialNumber: "+s );
                             result.success(s);
                         }
 
@@ -847,6 +849,7 @@ Log.e("IminPrinter", "printBitmapToUrl 111 :" +img );                           
                 break;
             case "getPrinterModelName":
                 if (iminPrintUtils == null) {
+                    Log.d("TAG", "getPrinterThermalHead: " );
                     PrinterHelper.getInstance().getPrinterModelName(new INeoPrinterCallback() {
                         @Override
                         public void onRunResult(boolean isSuccess) throws RemoteException {
@@ -855,6 +858,7 @@ Log.e("IminPrinter", "printBitmapToUrl 111 :" +img );                           
 
                         @Override
                         public void onReturnString(String s) throws RemoteException {
+                            Log.d("TAG", "getPrinterThermalHead: " +s);
                             result.success(s);
                         }
 
@@ -872,6 +876,7 @@ Log.e("IminPrinter", "printBitmapToUrl 111 :" +img );                           
                 break;
             case "getPrinterThermalHead":
                 if (iminPrintUtils == null) {
+                    Log.d("TAG", "getPrinterThermalHead: " );
                     PrinterHelper.getInstance().getPrinterThermalHead(new INeoPrinterCallback() {
                         @Override
                         public void onRunResult(boolean isSuccess) throws RemoteException {
@@ -880,6 +885,7 @@ Log.e("IminPrinter", "printBitmapToUrl 111 :" +img );                           
 
                         @Override
                         public void onReturnString(String s) throws RemoteException {
+                            Log.d("TAG", "getPrinterThermalHead: " +s);
                             result.success(s);
                         }
 
@@ -897,6 +903,7 @@ Log.e("IminPrinter", "printBitmapToUrl 111 :" +img );                           
                 break;
             case "getPrinterFirmwareVersion":
                 if (iminPrintUtils == null) {
+                    Log.d("TAG", "getPrinterFirmwareVersion: " );
                     PrinterHelper.getInstance().getPrinterFirmwareVersion(new INeoPrinterCallback() {
                         @Override
                         public void onRunResult(boolean isSuccess) throws RemoteException {
@@ -905,6 +912,7 @@ Log.e("IminPrinter", "printBitmapToUrl 111 :" +img );                           
 
                         @Override
                         public void onReturnString(String s) throws RemoteException {
+                            Log.d("TAG", "getPrinterFirmwareVersion: " +s);
                             result.success(s);
                         }
 
@@ -922,11 +930,13 @@ Log.e("IminPrinter", "printBitmapToUrl 111 :" +img );                           
                 break;
             case "getServiceVersion":
                 if (iminPrintUtils == null) {
+                    Log.d("TAG", "getServiceVersion: " );
                     result.success(PrinterHelper.getInstance().getServiceVersion());
                 }
                 break;
             case "getPrinterHardwareVersion":
                 if (iminPrintUtils == null) {
+                    Log.d("TAG", "getPrinterHardwareVersion: " );
                     PrinterHelper.getInstance().getPrinterHardwareVersion(new INeoPrinterCallback() {
                         @Override
                         public void onRunResult(boolean isSuccess) throws RemoteException {
@@ -952,17 +962,20 @@ Log.e("IminPrinter", "printBitmapToUrl 111 :" +img );                           
                 break;
             case "getUsbPrinterVidPid":
                 if (iminPrintUtils == null) {
+                    Log.d("TAG", "getUsbPrinterVidPid: " );
                     result.success(PrinterHelper.getInstance().getUsbPrinterVidPid());
                 }
                 break;
             case "getUsbDevicesName":
                 if (iminPrintUtils == null) {
+                    Log.d("TAG", "getUsbDevicesName: " );
                     result.success(PrinterHelper.getInstance().getUsbDevicesName());
                 }
                 break;
 
             case "getPrinterPaperDistance":
                 if (iminPrintUtils == null) {
+                    Log.d("TAG", "getPrinterPaperDistance: " );
                     PrinterHelper.getInstance().getPrinterPaperDistance(new INeoPrinterCallback() {
                         @Override
                         public void onRunResult(boolean isSuccess) throws RemoteException {
@@ -1524,15 +1537,16 @@ Log.e("IminPrinter", "printBitmapToUrl 111 :" +img );                           
                     Log.e("IminPrinter", "labelPrintCanvas: 打印绘制的内容 =>" +printCount);
                     PrinterHelper.getInstance().labelPrintCanvas(printCount, new ILabelPrintResult() {
                         @Override
+                        public IBinder asBinder() {
+                            return null;
+                        }
+
+                        @Override
                         public void onResult(int resultCode, String message) throws RemoteException {
 
                             result.success(true);
                         }
 
-                        @Override
-                        public IBinder asBinder() {
-                            return null;
-                        }
                     });
                 }
 
@@ -1592,7 +1606,7 @@ Log.e("IminPrinter", "printBitmapToUrl 111 :" +img );                           
                         }
                         @Override
                         public void onReturnString(String string) throws RemoteException {
-                            Log.e("IminPrinter", "getPrintModel: 获取当前打印机模式"+ string);
+                            Log.e("IminPrinter", "getPrintModel: 获取当前打印机模式 ==>"+ string);
                             if (string != null && !string.isEmpty()){
                                 if (string.equalsIgnoreCase("Label")){
                                     result.success(1);
@@ -1607,10 +1621,7 @@ Log.e("IminPrinter", "printBitmapToUrl 111 :" +img );                           
                         @Override
                         public void onPrintResult(int code, String msg) throws RemoteException {
                         }
-                        @Override
-                        public IBinder asBinder() {
-                            return null;
-                        }
+
                     });
                 }
             }
@@ -1652,7 +1663,7 @@ Log.e("IminPrinter", "printBitmapToUrl 111 :" +img );                           
         IntentFilter intentFilter = new IntentFilter();
         intentFilter.addAction(ACTION_PRITER_STATUS_CHANGE);
         intentFilter.addAction(ACTION_POGOPIN_STATUS_CHANGE);
-        _context.registerReceiver(chargingStateChangeReceiver, intentFilter);
+        ContextCompat.registerReceiver(_context, chargingStateChangeReceiver, intentFilter, ContextCompat.RECEIVER_NOT_EXPORTED);
     }
 
     @Override
@@ -1660,6 +1671,15 @@ Log.e("IminPrinter", "printBitmapToUrl 111 :" +img );                           
         _context.unregisterReceiver(chargingStateChangeReceiver);
         eventSink = null;
         chargingStateChangeReceiver = null;
+    }
+
+    public static boolean isAndroid15() {
+        // 假设Android 15的API级别是34（实际数字将在Android 15发布时确定）
+        final int ANDROID_15_API_LEVEL = 32;
+        // 获取当前设备的API级别
+        int currentApiLevel = Build.VERSION.SDK_INT;
+        // 判断是否是Android 15
+        return currentApiLevel >= ANDROID_15_API_LEVEL;
     }
 
 }
