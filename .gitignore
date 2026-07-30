@@ -1,6 +1,7 @@
 # See https://www.dartlang.org/guides/libraries/private-files
 
 # Files and directories created by pub
+.history*
 .dart_tool/
 .packages
 build/
@@ -25,3 +26,23 @@ doc/api/
 
 .flutter-plugins
 .flutter-plugins-dependencies
+
+# IDE
+.idea/
+.vscode/
+*.iml
+
+# Android
+android/.idea/
+android/key.properties
+example/key.properties
+example/my-release-key.jks
+example/FlutterDemo.apk
+example/android/app/.cxx/
+# Keys
+*.jks
+*.keystore
+key.properties
+
+# Images (build artifacts)
+image/

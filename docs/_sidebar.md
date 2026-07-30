@@ -1,5 +1,7 @@
-* introduction
+* **English**
+  * [Home](README.md)
+  * [API Reference](api.md)
 
- * [Quick Start](quickstart.md) 
-
- * [Document](/api)
+* **中文**
+  * [首页](README-zh.md)
+  * [API 文档](api-zh.md)

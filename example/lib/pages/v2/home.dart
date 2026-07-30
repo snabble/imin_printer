@@ -11,6 +11,7 @@ import 'package:imin_printer_example/pages/v2/print_sttings_form.dart';
 import 'package:permission_handler/permission_handler.dart';
 
 import 'transaction_print.dart';
+import 'new_features_test.dart';
 
 class NewHome extends StatefulWidget {
   const NewHome({super.key});
@@ -116,17 +117,17 @@ class _NewHomeState extends State<NewHome> {
                 },
                 child: const Text('open CashBox'),
               ),
-              OutlinedButton(
-                onPressed: () async {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) =>
-                            const InfoPage(type: 'CashBox Info')),
-                  );
-                },
-                child: const Text('cashBox info'),
-              ),
+              // OutlinedButton(
+              //   onPressed: () async {
+              //     Navigator.push(
+              //       context,
+              //       MaterialPageRoute(
+              //           builder: (context) =>
+              //               const InfoPage(type: 'CashBox Info')),
+              //     );
+              //   },
+              //   child: const Text('cashBox info'),
+              // ),
               OutlinedButton(
                 onPressed: () async {
                   await iminPrinter.printerSelfChecking();
@@ -139,7 +140,7 @@ class _NewHomeState extends State<NewHome> {
                   debugPrint('escPos: $escPos');
 
                   await iminPrinter.sendRAWData(Uint8List.fromList(escPos));
-                    await iminPrinter.printAndFeedPaper(70);
+                  await iminPrinter.printAndFeedPaper(70);
                 },
                 child: const Text('sendRAWData'),
               ),
@@ -157,15 +158,18 @@ class _NewHomeState extends State<NewHome> {
               ),
               OutlinedButton(
                 onPressed: () async {
+                  await iminPrinter.printAndFeedPaper(70);
                   await iminPrinter.partialCut();
-                    await iminPrinter.printAndFeedPaper(70);
                 },
                 child: const Text('partialCut'),
               ),
               OutlinedButton(
                 onPressed: () async {
+                  await iminPrinter.printTextBitmap(
+                      "Ved byttemærke kan der byttes til andre produkter eller tilgodebevis.");
+
+                  await iminPrinter.printAndFeedPaper(100);
                   await iminPrinter.fullCut();
-                  await iminPrinter.printAndFeedPaper(70);
                 },
                 child: const Text('fullCut'),
               ),
@@ -188,14 +192,14 @@ class _NewHomeState extends State<NewHome> {
               ),
               OutlinedButton(
                 onPressed: () async {
-                  // Uint8List byte =
-                  //     await readFileBytes('assets/images/logo.png');
-                  // await iminPrinter.printSingleBitmap(byte,
-                  //     pictureStyle: IminPictureStyle(
-                  //       alignment: IminPrintAlign.center,
-                  //       width: 50,
-                  //       height: 20,
-                  //     ));
+                  Uint8List byte =
+                      await readFileBytes('assets/images/logo.png');
+                  await iminPrinter.printSingleBitmapColorChart(byte,
+                      pictureStyle: IminPictureStyle(
+                        alignment: IminPrintAlign.center,
+                        width: 50,
+                        height: 100,
+                      ));
 
                   await iminPrinter.printSingleBitmap(
                       'https://oss-sg.imin.sg/web/iMinPartner2/images/logo.png',
@@ -204,6 +208,16 @@ class _NewHomeState extends State<NewHome> {
                         width: 150,
                         height: 50,
                       ));
+
+                  Uint8List byte1 =
+                      await readFileBytes('assets/images/ic_test.jpg');
+                  await iminPrinter.printSingleBitmap(byte1,
+                      pictureStyle: IminPictureStyle(
+                        alignment: IminPrintAlign.center,
+                        width: 50,
+                        height: 100,
+                      ));
+
                   await iminPrinter.printAndFeedPaper(70);
                   await iminPrinter.printText('232323');
                 },
@@ -228,7 +242,7 @@ class _NewHomeState extends State<NewHome> {
                         width: 250,
                         height: 30,
                       ));
-                        await iminPrinter.printAndFeedPaper(70);
+                  await iminPrinter.printAndFeedPaper(70);
                 },
                 child: const Text('print multiBitmap'),
               ),
@@ -250,7 +264,7 @@ class _NewHomeState extends State<NewHome> {
                         width: 150,
                         height: 50,
                       ));
-                        await iminPrinter.printAndFeedPaper(70);
+                  await iminPrinter.printAndFeedPaper(70);
                 },
                 child: const Text('print bitmapColorChart'),
               ),
@@ -394,12 +408,12 @@ class _NewHomeState extends State<NewHome> {
                         fontSize: 26,
                         align: IminPrintAlign.left),
                     ColumnMaker(
-                        text: '冯老师',
+                        text: '王老师',
                         width: 120,
                         fontSize: 26,
                         align: IminPrintAlign.left),
                   ]);
-                   await iminPrinter.printAndFeedPaper(70);
+                  await iminPrinter.printAndFeedPaper(70);
                 },
                 child: const Text('print ColumnsText'),
               ),
@@ -427,7 +441,31 @@ class _NewHomeState extends State<NewHome> {
                         fontSize: 26,
                         align: IminPrintAlign.left),
                   ]);
-                    await iminPrinter.printAndFeedPaper(70);
+
+                  await iminPrinter.printColumnsString(cols: [
+                    ColumnMaker(
+                        text: 'name',
+                        width: 1,
+                        fontSize: 26,
+                        align: IminPrintAlign.left),
+                    ColumnMaker(
+                        text: 'Apple',
+                        width: 1,
+                        fontSize: 26,
+                        align: IminPrintAlign.left),
+                    ColumnMaker(
+                        text: 'price',
+                        width: 1,
+                        fontSize: 26,
+                        align: IminPrintAlign.left),
+                    ColumnMaker(
+                        text: '25.95',
+                        width: 1,
+                        fontSize: 26,
+                        align: IminPrintAlign.right),
+                  ]);
+
+                  await iminPrinter.printAndFeedPaper(70);
                 },
                 child: const Text('print ColumnsString'),
               ),
@@ -435,11 +473,10 @@ class _NewHomeState extends State<NewHome> {
                 onPressed: () async {
                   await iminPrinter.printQrCode('https://www.imin.sg',
                       qrCodeStyle: IminQrCodeStyle(
-                          errorCorrectionLevel:
-                              IminQrcodeCorrectionLevel.levelH,
-                          qrSize: 5,
-                         ));
-                           await iminPrinter.printAndFeedPaper(70);
+                        errorCorrectionLevel: IminQrcodeCorrectionLevel.levelH,
+                        qrSize: 5,
+                      ));
+                  await iminPrinter.printAndFeedPaper(70);
                 },
                 child: const Text('print Qrcode'),
               ),
@@ -453,7 +490,7 @@ class _NewHomeState extends State<NewHome> {
                         text: 'www.google.com',
                       ),
                       doubleQRSize: 5);
-                        await iminPrinter.printAndFeedPaper(70);
+                  await iminPrinter.printAndFeedPaper(70);
                 },
                 child: const Text('print DoubleQR'),
               ),
@@ -467,9 +504,481 @@ class _NewHomeState extends State<NewHome> {
                 },
                 child: const Text('transaction printing'),
               ),
+              OutlinedButton(
+                onPressed: () async {
+                  // 创建一个 LabelCanvasStyle 对象
+                  await iminPrinter.labelLearning();
+                },
+                child: const Text('labelLearning'),
+              ),
+              OutlinedButton(
+                onPressed: () async {
+                  // // 创建一个 LabelCanvasStyle 对象
+                  LabelCanvasStyle canvasStyle =
+                      LabelCanvasStyle(width: 50 * 8, height: 30 * 8, posX: 48);
+
+                  await iminPrinter.labelInitCanvas(
+                      labelCanvasStyle: canvasStyle);
+
+                  LabelTextStyle textStyle = LabelTextStyle(
+                    posX: 30,
+                    posY: 30,
+                    textSize: 18,
+                  );
+                  await iminPrinter.labelAddText("PACKED ON",
+                      labelTextStyle: textStyle);
+
+                  LabelTextStyle textStyle1 = LabelTextStyle(
+                    posX: 220,
+                    posY: 45,
+                    textSize: 30,
+                  );
+                  await iminPrinter.labelAddText("Fuji Apple",
+                      labelTextStyle: textStyle1);
+
+                  LabelTextStyle textStyle2 = LabelTextStyle(
+                    posX: 27,
+                    posY: 60,
+                    textSize: 20,
+                  );
+                  await iminPrinter.labelAddText("Fuji Apple",
+                      labelTextStyle: textStyle2);
+
+                  LabelTextStyle textStyle3 = LabelTextStyle(
+                    posX: 185,
+                    posY: 85,
+                    textSize: 18,
+                  );
+                  await iminPrinter.labelAddText(
+                      "WT/lb                     1.70",
+                      labelTextStyle: textStyle3);
+
+                  LabelTextStyle textStyle4 = LabelTextStyle(
+                    posX: 185,
+                    posY: 113,
+                    textSize: 18,
+                  );
+                  await iminPrinter.labelAddText("PRICE PER lb       9.98",
+                      labelTextStyle: textStyle4);
+
+                  LabelTextStyle textStyle5 = LabelTextStyle(
+                    posX: 18,
+                    posY: 130,
+                    textSize: 22,
+                  );
+                  await iminPrinter.labelAddText("TOTAL PRICE",
+                      labelTextStyle: textStyle5);
+
+                  LabelTextStyle textStyle6 = LabelTextStyle(
+                    posX: 10,
+                    posY: 190,
+                    textSize: 45,
+                    enableBold: true,
+                  );
+                  await iminPrinter.labelAddText("\$16.98",
+                      labelTextStyle: textStyle6);
+
+                  LabelBarCodeStyle labelAddBarCode = LabelBarCodeStyle(
+                      posX: 160,
+                      posY: 125,
+                      symbology: Symbology.CODE128,
+                      dotWidth: 2,
+                      barHeight: 50,
+                      readable: HumanReadable.POS_TWO);
+
+                  await iminPrinter.labelAddBarCode("{B123456",
+                      barCodeStyle: labelAddBarCode);
+
+                  LabelTextStyle textStyle7 = LabelTextStyle(
+                    posX: 12,
+                    posY: 227,
+                    textSize: 16,
+                  );
+                  await iminPrinter.labelAddText("Addr: Label Test Supermarket",
+                      labelTextStyle: textStyle7);
+
+                  await iminPrinter.labelPrintCanvas(1);
+                },
+                child: const Text('labelPrint'),
+              ),
+
+              /////////TEST   TEST    TEST ////////
+              OutlinedButton(
+                onPressed: () async {
+                  // LabelPrintBitmapStyle printBitmapStyle = LabelPrintBitmapStyle(
+                  //   width: 50 * 8,
+                  //   height: 30 * 8,
+                  // );
+                  // // // 调用 labelInitCanvas 方法
+                  // await iminPrinter.printLabelBitmap('https://oss-sg.imin.sg/web/iMinPartner2/images/logo.png',printBitmapStyle: printBitmapStyle);
+                  LabelCanvasStyle canvasStyle =
+                      LabelCanvasStyle(width: 50 * 8, height: 60 * 8, posX: 48);
+
+                  await iminPrinter.labelInitCanvas(
+                      labelCanvasStyle: canvasStyle);
+
+                  LabelAreaStyle areaStyle = LabelAreaStyle(
+                      style: Shape.BOX,
+                      width: 50 * 8 - 26,
+                      height: 60 * 8 - 24,
+                      posX: 24,
+                      posY: 2,
+                      thick: 2);
+
+                  await iminPrinter.labelAddArea(areaStyle: areaStyle);
+
+                  LabelAreaStyle areaStyle1 = LabelAreaStyle(
+                      style: Shape.PATH,
+                      endX: 50 * 8 - 4,
+                      endY: 80,
+                      posX: 24,
+                      posY: 80,
+                      thick: 2);
+
+                  await iminPrinter.labelAddArea(areaStyle: areaStyle1);
+
+                  LabelAreaStyle areaStyle2 = LabelAreaStyle(
+                      style: Shape.PATH,
+                      endX: 20 * 8,
+                      endY: 80,
+                      posX: 20 * 8,
+                      posY: 2,
+                      thick: 2);
+
+                  await iminPrinter.labelAddArea(areaStyle: areaStyle2);
+
+                  LabelAreaStyle areaStyle3 = LabelAreaStyle(
+                      style: Shape.PATH,
+                      endX: 50 * 8 - 4,
+                      endY: 230,
+                      posX: 24,
+                      posY: 230,
+                      thick: 2);
+
+                  await iminPrinter.labelAddArea(areaStyle: areaStyle3);
+
+                  LabelAreaStyle areaStyle4 = LabelAreaStyle(
+                      style: Shape.PATH,
+                      endX: 20 * 8,
+                      endY: 310,
+                      posX: 20 * 8,
+                      posY: 232,
+                      thick: 2);
+
+                  await iminPrinter.labelAddArea(areaStyle: areaStyle4);
+
+                  LabelAreaStyle areaStyle5 = LabelAreaStyle(
+                      style: Shape.PATH,
+                      endX: 50 * 8 - 4,
+                      endY: 310,
+                      posX: 24,
+                      posY: 310,
+                      thick: 2);
+
+                  await iminPrinter.labelAddArea(areaStyle: areaStyle5);
+
+                  LabelTextStyle textStyle0 = LabelTextStyle(
+                      posX: 28, posY: 55, textSize: 15, enableBold: true);
+                  await iminPrinter.labelAddText("KWE",
+                      labelTextStyle: textStyle0);
+
+                  LabelTextStyle textStyle01 = LabelTextStyle(
+                      posX: 20 * 8 + 10,
+                      posY: 55,
+                      textSize: 15,
+                      enableBold: true);
+                  await iminPrinter.labelAddText("Shipper:XXXXX",
+                      labelTextStyle: textStyle01);
+
+                  LabelBarCodeStyle labelAddBarCode0 = LabelBarCodeStyle(
+                      posX: 40,
+                      posY: 100,
+                      symbology: Symbology.CODE128,
+                      dotWidth: 2,
+                      barHeight: 80,
+                      readable: HumanReadable.POS_TWO);
+
+                  await iminPrinter.labelAddBarCode("{AHWB Barcode",
+                      barCodeStyle: labelAddBarCode0);
+
+                  LabelTextStyle textStyle2 = LabelTextStyle(
+                      posX: 28, posY: 260, textSize: 15, enableBold: true);
+                  await iminPrinter.labelAddText("Dest",
+                      labelTextStyle: textStyle2);
+
+                  LabelTextStyle textStyle3 =
+                      LabelTextStyle(posX: 28, posY: 300, textSize: 15);
+                  await iminPrinter.labelAddText("XXX",
+                      labelTextStyle: textStyle3);
+
+                  LabelTextStyle textStyle4 = LabelTextStyle(
+                      posX: 20 * 8 + 10, posY: 260, textSize: 15);
+                  await iminPrinter.labelAddText("Actual Pcs",
+                      labelTextStyle: textStyle4);
+
+                  LabelTextStyle textStyle5 = LabelTextStyle(
+                      posX: 20 * 8 + 10, posY: 300, textSize: 15);
+                  await iminPrinter.labelAddText("XX",
+                      labelTextStyle: textStyle5);
+
+                  LabelBarCodeStyle labelAddBarCode = LabelBarCodeStyle(
+                      posX: 110,
+                      posY: 330,
+                      symbology: Symbology.CODE128,
+                      dotWidth: 1,
+                      barHeight: 80,
+                      readable: HumanReadable.POS_TWO);
+
+                  await iminPrinter.labelAddBarCode("{AJob ID Barcode",
+                      barCodeStyle: labelAddBarCode);
+
+                  await iminPrinter.labelPrintCanvas(1);
+                },
+                child: const Text('printLabelBitmap'),
+              ),
+              OutlinedButton(
+                onPressed: () async {
+                  // 创建一个 LabelCanvasStyle 对象
+                  int? mode = await iminPrinter.getPrinterMode();
+                  Fluttertoast.showToast(
+                      msg: mode.toString(),
+                      toastLength: Toast.LENGTH_LONG,
+                      gravity: ToastGravity.BOTTOM, // 消息框弹出的位置
+                      // timeInSecForIos: 1,  // 消息框持续的时间（目前的版本只有ios有效）
+                      backgroundColor: Colors.red,
+                      textColor: Colors.white,
+                      fontSize: 16.0);
+                },
+                child: const Text('getPrinterMode'),
+              ),
+              // OutlinedButton(
+              //   onPressed: () async {
+              //     // 创建一个 LabelCanvasStyle 对象
+              //   },
+              //   child: const Text('TEST test'),
+              // ),
+
+              // OutlinedButton(
+              //   onPressed: () async {
+              //     // 创建一个 LabelCanvasStyle 对象
+              // await iminPrinter.printSingleBitmap(
+              //     'https://oss-sg.imin.sg/web/iMinPartner2/images/logo.png',
+              //     pictureStyle: IminPictureStyle(
+              //       alignment: IminPrintAlign.center,
+              //       width: 150,
+              //       height: 50,
+              //     ));
+              // await iminPrinter.setTextBitmapSize(42);
+              // await iminPrinter.setTextBitmapStyle(IminFontStyle.bold);
+              // await iminPrinter.printTextBitmap('TEXT HHHHHHH');
+              // await iminPrinter.printColumnsString(cols: [
+              //   ColumnMaker(
+              //       text: 'name',
+              //       width: 1,
+              //       fontSize: 26,
+              //       align: IminPrintAlign.left),
+              //   ColumnMaker(
+              //       text: 'Apple',
+              //       width: 1,
+              //       fontSize: 26,
+              //       align: IminPrintAlign.left),
+              //   ColumnMaker(
+              //       text: 'price',
+              //       width: 1,
+              //       fontSize: 26,
+              //       align: IminPrintAlign.left),
+              //   ColumnMaker(
+              //       text: '25.95',
+              //       width: 1,
+              //       fontSize: 26,
+              //       align: IminPrintAlign.right),
+              // ]);
+              // await iminPrinter.setTextBitmapSize(26);
+              // await iminPrinter.setTextBitmapStyle(IminFontStyle.normal);
+              // await iminPrinter.printTextBitmap('this all');
+
+              // await iminPrinter.setTextBitmapAntiWhite(true);
+              // // await iminPrinter.setTextBitmapLineSpacing(0.8);
+              // // await iminPrinter.setTextLineSpacing(2);
+              // await iminPrinter
+              //     .printTextBitmap('this is setTextBitmapAntiWhite');
+              // await iminPrinter.setTextBitmapAntiWhite(false);
+              //
+              // await iminPrinter.printTextBitmap('this all linea 2salto de linea');
+              //
+              // await iminPrinter.printTextBitmap('this all');
+              //
+              // await iminPrinter.printTextBitmap('this all');
+
+              // await iminPrinter.printBarCode(IminBarcodeType.code39, '12345678',
+              //    style: IminBarCodeStyle(
+              //      align: IminPrintAlign.left,
+              //      position: IminBarcodeTextPos.textBelow,
+              //      height: 100,
+              //      width: 2
+              //    ));
+              //   },
+              //   child: const Text('printExamp lelabelPrint'),
+              // ),
+              OutlinedButton(
+                onPressed: () async {
+                  await _printReceipt();
+                },
+                child: const Text('☕ Print Coffee Receipt'),
+              ),
+              OutlinedButton(
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => const NewFeaturesTestPage()),
+                  );
+                },
+                child: const Text('🆕 New Features Test'),
+              ),
             ],
           ),
         )));
+  }
+
+  Future<void> _printReceipt() async {
+    try {
+      // Initialize printer
+      bool? initialized = await iminPrinter.initPrinter();
+      if (initialized != true) {
+        throw Exception('Failed to initialize printer');
+      }
+
+      // Check printer status
+      Map<String, dynamic> state = await iminPrinter.getPrinterStatus();
+      debugPrint('Printer status: $state');
+
+      // Print receipt header
+      await iminPrinter.printText(
+        'COFFEE SHOP',
+        style: IminTextStyle(
+          fontSize: 32,
+          fontStyle: IminFontStyle.bold,
+          align: IminPrintAlign.center,
+        ),
+      );
+
+      await iminPrinter.printText(
+        '123 Main Street',
+        style: IminTextStyle(
+          fontSize: 24,
+          align: IminPrintAlign.center,
+        ),
+      );
+
+      await iminPrinter.printAndLineFeed();
+      await iminPrinter.printText('--------------------------------');
+      await iminPrinter.printAndLineFeed();
+
+      // Print items using columns
+      await iminPrinter.printColumnsText(cols: [
+        ColumnMaker(
+          text: 'Item',
+          width: 200,
+          fontSize: 24,
+          align: IminPrintAlign.left,
+        ),
+        ColumnMaker(
+          text: 'Price',
+          width: 150,
+          fontSize: 24,
+          align: IminPrintAlign.right,
+        ),
+      ]);
+
+      await iminPrinter.printColumnsText(cols: [
+        ColumnMaker(
+          text: 'Coffee',
+          width: 200,
+          fontSize: 24,
+          align: IminPrintAlign.left,
+        ),
+        ColumnMaker(
+          text: '\$3.50',
+          width: 150,
+          fontSize: 24,
+          align: IminPrintAlign.right,
+        ),
+      ]);
+
+      await iminPrinter.printColumnsText(cols: [
+        ColumnMaker(
+          text: 'Muffin',
+          width: 200,
+          fontSize: 24,
+          align: IminPrintAlign.left,
+        ),
+        ColumnMaker(
+          text: '\$2.50',
+          width: 150,
+          fontSize: 24,
+          align: IminPrintAlign.right,
+        ),
+      ]);
+
+      await iminPrinter.printText('--------------------------------');
+
+      // Print total
+      await iminPrinter.printColumnsText(cols: [
+        ColumnMaker(
+          text: 'TOTAL',
+          width: 200,
+          fontSize: 28,
+          align: IminPrintAlign.left,
+        ),
+        ColumnMaker(
+          text: '\$6.00',
+          width: 150,
+          fontSize: 28,
+          align: IminPrintAlign.right,
+        ),
+      ]);
+
+      await iminPrinter.printAndLineFeed();
+
+      // Print QR code for receipt
+      await iminPrinter.printQrCode(
+        'receipt-12345',
+        qrCodeStyle: IminQrCodeStyle(
+          qrSize: 5,
+          align: IminPrintAlign.center,
+        ),
+      );
+
+      await iminPrinter.printAndLineFeed();
+      await iminPrinter.printText(
+        'Thank you!',
+        style: IminTextStyle(
+          fontSize: 24,
+          align: IminPrintAlign.center,
+        ),
+      );
+
+      // Cut paper (if device supports cutter)
+      await iminPrinter.partialCut();
+
+      Fluttertoast.showToast(
+          msg: 'Receipt printed successfully!',
+          toastLength: Toast.LENGTH_LONG,
+          gravity: ToastGravity.BOTTOM,
+          backgroundColor: Colors.green,
+          textColor: Colors.white,
+          fontSize: 16.0);
+    } catch (e) {
+      debugPrint('Receipt printing failed: $e');
+      Fluttertoast.showToast(
+          msg: 'Print failed: $e',
+          toastLength: Toast.LENGTH_LONG,
+          gravity: ToastGravity.BOTTOM,
+          backgroundColor: Colors.red,
+          textColor: Colors.white,
+          fontSize: 16.0);
+    }
   }
 
   @override

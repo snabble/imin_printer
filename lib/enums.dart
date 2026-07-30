@@ -2,16 +2,16 @@ library enums;
 
 // 打印机状态
 enum PrinterStatus {
-  initPrinterError('-1', 'Failed to initialize the printer!'),
-  normal('0', 'The printer is normally!'),
-  notPoweredOn('1', 'The printer is not connected or powered on!'),
-  notLibraryMatch('2', 'The printer and call library do not match'),
-  openPrintHead('3', 'Print head open!'),
-  cutterNotReset('4', 'The cutter is not reset!'),
-  overHeated('5', 'Overheated'),
+  initPrinterError('-1', 'Printer initialization failed!'),
+  normal('0', 'Printer is normal'),
+  notPoweredOn('1', 'Printer not connected or powered on!'),
+  notLibraryMatch('2', 'Printer and call library mismatch!'),
+  openPrintHead('3', 'Printer door is open!'),
+  cutterNotReset('4', 'Cutter not reset!'),
+  overHeated('5', 'Printer head overheated!'),
   blackLabelError('6', 'Black label error!'),
-  notPaperFeed('7', 'No Paper Feed'),
-  outOfPaper('8', 'Paper Running Out!'),
+  notPaperFeed('7', 'Paper missing!'),
+  outOfPaper('8', 'Paper is running out!'),
   otherError('99', 'Other errors!');
 
   const PrinterStatus(this.code, this.value);
@@ -124,4 +124,51 @@ enum IminBarCodeToBitmapFormat {
   upcA,
   upcE,
   upcEanExteNsion;
+}
+
+enum ImageAlgorithm {
+  BINARIZATION,
+  DITHERING;
+}
+
+enum Shape { RECT_FILL, RECT_WHITE, RECT_REVERSE, BOX, CIRCLE, OVAL, PATH }
+
+enum Rotate { ROTATE_0, ROTATE_90, ROTATE_180, ROTATE_270 }
+
+enum ErrorLevel { L, M, Q, H }
+
+enum Symbology {
+  UPCA,
+  UPCE,
+  EAN13,
+  EAN8,
+  CODE39,
+  ITF,
+  CODABAR,
+  CODE93,
+  CODE128;
+}
+
+enum AlignLabel { DEFAULT, LEFT, CENTER, RIGHT }
+
+enum HumanReadable { HIDE, POS_ONE, POS_TWO, POS_THREE }
+
+/// Label info query types for labelQueryInfo
+enum IminLabelInfo {
+  MODEL,
+  VERSION,
+  HEIGHT,
+  DENSITY,
+  SPEED,
+  MODE,
+  GAP_OFFSET,
+  PRINT_LENGTH,
+  NO_PAPER_THRESHOLD,
+  HAS_PAPER_THRESHOLD,
+  THRESHOLD_ADJUSTMENT,
+  ORIGINAL_STATUS,
+  LABEL_STATUS,
+  PAPER_STATUS,
+  HOST_RESULT,
+  GAP_ERROR
 }
